@@ -1,16 +1,31 @@
 FROM debian:buster
 
-#--- Update verification ---#
-RUN apt-get update && apt-get upgrade -y
 
-#--- dependencies ---#
-RUN apt-get install -y nginx openssl
+#--- Update verification ---#
+RUN apt-get update && apt-get upgrade -y && \
+	#--- dependencies ---#
+	apt-get install -y nginx openssl && \
+	#-- cleaning cache --#
+	apt-get clean && rm -rf /var/lib/apt/lists/*  
+
+
+#--- SSL folder ---#
+RUN mkdir -p /etc/ssl/certs
+
 
 #--- certificat ---#
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx-selfsigned.key -out nginx-selfsigned.crt
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout /etc/ssl/certs/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt \
+	-subj "/C=CA/ST=Quebec/L=Montreal/O=Security/OU=IT Department/CN=oboucher.42.fr"
 
+
+#--- config ---#
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
+
+#--- ports ---#
 EXPOSE 443
 
+
+#--- execution ---#
 CMD [ "nginx", "-g", "daemon off;" ]
