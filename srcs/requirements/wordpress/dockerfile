@@ -1,18 +1,14 @@
 FROM debian:buster
 
 
-#--- variable ---#
-ARG PHP_VERSION=7.3
-
-
 RUN apt-get update && apt-get upgrade -y && \
 	#--- dependencies ---#
-	apt-get install -y php${PHP_VERSION}-fpm wget php${PHP_VERSION}-mysql mariadb-client && \
+	apt-get install -y php-fpm wget php-mysql mariadb-client && \
 	#--- cleaning cache ---#
 	apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 #--- config ---#
-COPY conf/www.conf /etc/php/${PHP_VERSION}/fpm/pool.d/
+COPY conf/www.conf /etc/php//fpm/pool.d/
 
 
 #--- WP-CLI ---#

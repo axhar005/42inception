@@ -1,27 +1,37 @@
-# Chemin relatif au fichier docker-compose.yml depuis le dossier srcs
-DC_FILE = srcs/docker compose.yml
+#--- path to the directory containing the docker-compose.yml file ---#
+DIR := srcs/
 
-# Commande de base pour Docker Compose
-DC = docker compose $(DC_FILE)
 
-.PHONY: up down build
+#--- basic Docker Compose command ---#
+DC := docker compose -f $(DIR)docker-compose.yml
 
-# Démarrer les services en mode détaché
+
+#--- start containers ---#
 up:
-	$(DC) up -d
+	@$(DC) up -d
 
-# Arrêter les services
+
+#--- stop containers ---#
 down:
-	$(DC) down
+	@$(DC) down
 
-# Reconstruire les services
+
+#--- restart containers ---#
+restart:
+	@$(DC) down && $(DC) up -d
+
+
+#--- build or rebuild services ---#
 build:
-	$(DC) build
+	@$(DC) build
 
-# Afficher les logs des services
+
+#--- stop and remove containers, networks, images, and volumes ---#
+clean: down
+	@$(DC) down --rmi all -v
+
 logs:
-	$(DC) logs
+	@docker logs srcs-nginx-1
+	@docker logs srcs-wordpress-1
 
-# Arrêter et supprimer les volumes
-clean:
-	$(DC) down -v
+.PHONY: up down build clean

@@ -16,7 +16,7 @@ RUN mkdir -p /etc/ssl/certs
 #--- certificat ---#
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout /etc/ssl/certs/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt \
-	-subj "/C=CA/ST=Quebec/L=Montreal/O=Security/OU=IT Department/CN=oboucher.42.fr"
+	-subj "/C=CA/ST=Quebec/L=Montreal/O=Security/OU=IT Department/CN=localhost"
 
 
 #--- config ---#

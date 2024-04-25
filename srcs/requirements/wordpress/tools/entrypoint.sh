@@ -1,10 +1,13 @@
 #!/bin/bash
 
-#--- check if all required environment variables are set ---#
-if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$DOMAIN_NAME" ] || [ -z "$WP_TITLE" ] || [ -z "$WP_ADMIN" ] || [ -z "$WP_PASSWORD" ] || [ -z "$WP_EMAIL" ] || [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ] || [ -z "$WP_USER_PASSWORD" ] || [-z "$MYSQL_HOS"]; then
-	echo "Error: One or more environment variables are undefined. Check that all credentials are provided."
-	exit 1
-fi
+service php7.3-fpm start
+service php7.3-fpm stop
+
+# #--- check if all required environment variables are set ---#
+# if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$DOMAIN_NAME" ] || [ -z "$WP_TITLE" ] || [ -z "$WP_ADMIN" ] || [ -z "$WP_PASSWORD" ] || [ -z "$WP_EMAIL" ] || [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ] || [ -z "$WP_USER_PASSWORD" ] || [-z "$MYSQL_HOST"]; then
+# 	echo "Error: One or more environment variables are undefined. Check that all credentials are provided."
+# 	exit 1
+# fi
 
 #--- ensure admin username does not contain 'admin' ---#
 if [[ "$WP_ADMIN" == *"admin"* ]]; then
@@ -25,7 +28,7 @@ fi
 
 #--- start PHP-FPM in foreground mode ---#
 echo "Starting PHP-FPM..."
-exec /usr/sbin/php-fpm"$PHP_VERSION" -F
+exec /usr/sbin/php-fpm7.3 -F
 
 #--- handling unexpected script termination ---#
 echo "Unexpected script exit. Check PHP-FPM logs for errors."
