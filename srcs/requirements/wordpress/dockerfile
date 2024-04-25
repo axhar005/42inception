@@ -23,7 +23,7 @@ RUN chmod +x /entrypoint.sh
 
 
 #--- ports ---#
-# EXPOSE 9000
+EXPOSE 9000
 
 
 #--- working directory ---#
