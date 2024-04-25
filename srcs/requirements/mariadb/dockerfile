@@ -1,0 +1,19 @@
+FROM debian:buster
+
+
+#--- dependencies ---#
+RUN apt-get update && apt-get upgrade -y && apt-get install mariadb-server -y
+
+
+#--- config ---#
+COPY tools/entrypoint.sh /entrypoint.sh
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chmod +x /entrypoint.sh
+
+
+#--- ports ---#
+EXPOSE 3306
+
+
+#--- execution ---#
+ENTRYPOINT ["/entrypoint.sh"]
