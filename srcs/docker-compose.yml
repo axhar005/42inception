@@ -11,9 +11,10 @@ services:
       - "443:443"
     depends_on:
       - wordpress
+      - mariadb
     networks:
       - inception
-    restart: unless-stopped
+    restart: always
 
   mariadb:
     build:
@@ -28,7 +29,7 @@ services:
       - mariadb:/var/lib/mysql
     networks: 
       - inception
-    restart: unless-stopped
+    restart: always
 
   wordpress:
     build:
@@ -50,7 +51,7 @@ services:
       - inception
     depends_on:
       - mariadb
-    restart: unless-stopped
+    restart: always
 
 volumes:
   wordpress:

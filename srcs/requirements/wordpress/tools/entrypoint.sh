@@ -1,7 +1,6 @@
 #!/bin/bash
 
 service php7.3-fpm start
-service php7.3-fpm stop
 
 # #--- check if all required environment variables are set ---#
 # if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$DOMAIN_NAME" ] || [ -z "$WP_TITLE" ] || [ -z "$WP_ADMIN" ] || [ -z "$WP_PASSWORD" ] || [ -z "$WP_EMAIL" ] || [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ] || [ -z "$WP_USER_PASSWORD" ] || [-z "$MYSQL_HOST"]; then
@@ -19,12 +18,15 @@ fi
 if [ ! -f /var/www/html/wp-config.php ]; then
 	echo "Setting up WordPress..."
 	wp core download --path=/var/www/html --allow-root
+	sleep 10
 	wp config create --dbname="$MYSQL_DATABASE" --dbuser="$MYSQL_USER" --dbpass="$MYSQL_PASSWORD" --dbhost="$MYSQL_HOST" --allow-root
 	wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_ADMIN" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL" --skip-email --allow-root
 	wp user create "$WP_USER" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role=author --allow-root
 else
 	echo "WordPress is already configured."
 fi
+
+service php7.3-fpm stop
 
 #--- start PHP-FPM in foreground mode ---#
 echo "Starting PHP-FPM..."

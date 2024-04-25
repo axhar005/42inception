@@ -10,13 +10,13 @@ RUN apt-get update && apt-get upgrade -y && \
 
 
 #--- SSL folder ---#
-RUN mkdir -p /etc/ssl/certs
+RUN mkdir -p /etc/nginx/ssl
 
 
 #--- certificat ---#
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /etc/ssl/certs/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt \
-	-subj "/C=CA/ST=Quebec/L=Montreal/O=Security/OU=IT Department/CN=localhost"
+	-keyout /etc/nginx/ssl/oboucher.key -out /etc/nginx/ssl/oboucher.crt \
+	-subj "/C=CA/ST=Quebec/L=Montreal/O=Security/OU=IT Department/CN=oboucher.42.fr"
 
 
 #--- config ---#
