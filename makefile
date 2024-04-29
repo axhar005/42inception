@@ -7,16 +7,15 @@ MA_DIR = /home/$(USER)/data/mariadb
 #--- basic Docker Compose command ---#
 DC := docker compose -f $(DIR)docker-compose.yml
 
-
 #--- directory ---#
 $(DATA_DIR): 
-	mkdir ${DATA_DIR}
+	@mkdir -p ${DATA_DIR}
 
-$(WP_DIR): 
-	mkdir ${WP_DIR}
+$(WP_DIR): $(DATA_DIR)
+	@mkdir -p ${WP_DIR}
 
-$(MA_DIR): 
-	mkdir ${MA_DIR}
+$(MA_DIR): $(DATA_DIR)
+	@mkdir -p ${MA_DIR}
 
 #--- ps ---#
 ps:
@@ -24,7 +23,7 @@ ps:
 
 
 #--- start containers ---#
-up:
+up: $(DATA_DIR) $(WP_DIR) $(MA_DIR)
 	@$(DC) up -d
 
 
@@ -46,6 +45,9 @@ build:
 #--- stop and remove containers, networks, images, and volumes ---#
 clean: down
 	@$(DC) down --rmi all -v
+	@sudo rm -rf $(WP_DIR)
+	@sudo rm -rf $(MA_DIR)
+	@sudo rm -rf $(DATA_DIR) 
 
 logs:
 	@docker logs srcs-nginx-1
