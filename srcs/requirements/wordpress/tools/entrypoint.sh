@@ -2,11 +2,11 @@
 
 service php7.3-fpm start
 
-# #--- check if all required environment variables are set ---#
-# if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$DOMAIN_NAME" ] || [ -z "$WP_TITLE" ] || [ -z "$WP_ADMIN" ] || [ -z "$WP_PASSWORD" ] || [ -z "$WP_EMAIL" ] || [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ] || [ -z "$WP_USER_PASSWORD" ] || [-z "$MYSQL_HOST"]; then
-# 	echo "Error: One or more environment variables are undefined. Check that all credentials are provided."
-# 	exit 1
-# fi
+#--- check if all required environment variables are set ---#
+if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$DOMAIN_NAME" ] || [ -z "$WP_TITLE" ] || [ -z "$WP_ADMIN" ] || [ -z "$WP_PASSWORD" ] || [ -z "$WP_EMAIL" ] || [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ] || [ -z "$WP_USER_PASSWORD" ] || [ -z "$MYSQL_HOST"]; then
+	echo "Error: One or more environment variables are undefined. Check that all credentials are provided."
+	exit 1
+fi
 
 #--- ensure admin username does not contain 'admin' ---#
 if [[ "$WP_ADMIN" == *"admin"* ]]; then
